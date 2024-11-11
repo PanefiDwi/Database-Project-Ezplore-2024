@@ -1,0 +1,375 @@
+/*==============================================================*/
+/* DBMS name:      PostgreSQL 9.x                               */
+/* Created on:     11/11/2024 13:07:27                          */
+/*==============================================================*/
+
+
+drop index AKTIVITAS_WISATA_PK;
+
+drop table AKTIVITAS_WISATA;
+
+drop index HOTEL_PK;
+
+drop table HOTEL;
+
+drop index PAKET_WISATA_PK;
+
+drop table PAKET_WISATA;
+
+drop index MEMILIKI_FK;
+
+drop index PEMBAYARAN_PK;
+
+drop table PEMBAYARAN;
+
+drop index MEMILIKI2_FK;
+
+drop index MELAKUKAN_FK;
+
+drop index PEMESANAN_PK;
+
+drop table PEMESANAN;
+
+drop index RELATIONSHIP_9_FK;
+
+drop index RELATIONSHIP_8_FK;
+
+drop table PEMESANAN_AKTIVITAS;
+
+drop index RELATIONSHIP_11_FK;
+
+drop index RELATIONSHIP_10_FK;
+
+drop table PEMESANAN_HOTEL;
+
+drop index RELATIONSHIP_7_FK;
+
+drop index RELATIONSHIP_6_FK;
+
+drop table PEMESANAN_PAKET;
+
+drop index RELATIONSHIP_5_FK;
+
+drop index RELATIONSHIP_4_FK;
+
+drop table PEMESANAN_TIKET;
+
+drop index PENGGUNA_PK;
+
+drop table PENGGUNA;
+
+drop index TIKET_PESAWAT_PK;
+
+drop table TIKET_PESAWAT;
+
+/*==============================================================*/
+/* Table: AKTIVITAS_WISATA                                      */
+/*==============================================================*/
+create table AKTIVITAS_WISATA (
+   ID_AKTIVITAS         INT4                 not null,
+   NAMA_AKTIVITAS       VARCHAR(245)         null,
+   DESKRIPSI            VARCHAR(245)         null,
+   LOKASI               VARCHAR(255)         null,
+   HARGA                MONEY                null,
+   constraint PK_AKTIVITAS_WISATA primary key (ID_AKTIVITAS)
+);
+
+/*==============================================================*/
+/* Index: AKTIVITAS_WISATA_PK                                   */
+/*==============================================================*/
+create unique index AKTIVITAS_WISATA_PK on AKTIVITAS_WISATA (
+ID_AKTIVITAS
+);
+
+/*==============================================================*/
+/* Table: HOTEL                                                 */
+/*==============================================================*/
+create table HOTEL (
+   ID_HOTEL             INT4                 not null,
+   NAMA_HOTEL           VARCHAR(255)         null,
+   LOKASI               VARCHAR(255)         null,
+   KATEGORI             VARCHAR(245)         null,
+   FASILITAS_           VARCHAR(245)         null,
+   HARGA                MONEY                null,
+   KAPASITAS            VARCHAR(245)         null,
+   constraint PK_HOTEL primary key (ID_HOTEL)
+);
+
+/*==============================================================*/
+/* Index: HOTEL_PK                                              */
+/*==============================================================*/
+create unique index HOTEL_PK on HOTEL (
+ID_HOTEL
+);
+
+/*==============================================================*/
+/* Table: PAKET_WISATA                                          */
+/*==============================================================*/
+create table PAKET_WISATA (
+   ID_PAKET             INT4                 not null,
+   NAMA_PAKET           VARCHAR(245)         null,
+   DESKRIPSI            VARCHAR(245)         null,
+   DURASI               VARCHAR(245)         null,
+   HARGA                MONEY                null,
+   KUOTA                VARCHAR(245)         null,
+   constraint PK_PAKET_WISATA primary key (ID_PAKET)
+);
+
+/*==============================================================*/
+/* Index: PAKET_WISATA_PK                                       */
+/*==============================================================*/
+create unique index PAKET_WISATA_PK on PAKET_WISATA (
+ID_PAKET
+);
+
+/*==============================================================*/
+/* Table: PEMBAYARAN                                            */
+/*==============================================================*/
+create table PEMBAYARAN (
+   ID_PEMBAYARAN        INT4                 not null,
+   ID_PEMESANAN         INT4                 null,
+   METODE_PEMBAYARAN    VARCHAR(255)         null,
+   STATUS_PEMBAYARAN    VARCHAR(50)          null,
+   TANGGAL_PEMBAYARAN   DATE                 null,
+   TOTAL_HARGA          MONEY                null,
+   constraint PK_PEMBAYARAN primary key (ID_PEMBAYARAN)
+);
+
+/*==============================================================*/
+/* Index: PEMBAYARAN_PK                                         */
+/*==============================================================*/
+create unique index PEMBAYARAN_PK on PEMBAYARAN (
+ID_PEMBAYARAN
+);
+
+/*==============================================================*/
+/* Index: MEMILIKI_FK                                           */
+/*==============================================================*/
+create  index MEMILIKI_FK on PEMBAYARAN (
+ID_PEMESANAN
+);
+
+/*==============================================================*/
+/* Table: PEMESANAN                                             */
+/*==============================================================*/
+create table PEMESANAN (
+   ID_PEMESANAN         INT4                 not null,
+   ID_PENGGUNA          INT4                 null,
+   ID_PEMBAYARAN        INT4                 null,
+   TANGGAL_PEMESANAN    DATE                 null,
+   STATUS_PEMESANAN     VARCHAR(50)          null,
+   constraint PK_PEMESANAN primary key (ID_PEMESANAN)
+);
+
+/*==============================================================*/
+/* Index: PEMESANAN_PK                                          */
+/*==============================================================*/
+create unique index PEMESANAN_PK on PEMESANAN (
+ID_PEMESANAN
+);
+
+/*==============================================================*/
+/* Index: MELAKUKAN_FK                                          */
+/*==============================================================*/
+create  index MELAKUKAN_FK on PEMESANAN (
+ID_PENGGUNA
+);
+
+/*==============================================================*/
+/* Index: MEMILIKI2_FK                                          */
+/*==============================================================*/
+create  index MEMILIKI2_FK on PEMESANAN (
+ID_PEMBAYARAN
+);
+
+/*==============================================================*/
+/* Table: PEMESANAN_AKTIVITAS                                   */
+/*==============================================================*/
+create table PEMESANAN_AKTIVITAS (
+   ID_AKTIVITAS         INT4                 null,
+   ID_PEMESANAN         INT4                 null
+);
+
+/*==============================================================*/
+/* Index: RELATIONSHIP_8_FK                                     */
+/*==============================================================*/
+create  index RELATIONSHIP_8_FK on PEMESANAN_AKTIVITAS (
+ID_PEMESANAN
+);
+
+/*==============================================================*/
+/* Index: RELATIONSHIP_9_FK                                     */
+/*==============================================================*/
+create  index RELATIONSHIP_9_FK on PEMESANAN_AKTIVITAS (
+ID_AKTIVITAS
+);
+
+/*==============================================================*/
+/* Table: PEMESANAN_HOTEL                                       */
+/*==============================================================*/
+create table PEMESANAN_HOTEL (
+   ID_HOTEL             INT4                 null,
+   ID_PEMESANAN         INT4                 null,
+   TANGGAL_CHECKIN      DATE                 null,
+   TANGGAL_CHECKOUT     DATE                 null
+);
+
+/*==============================================================*/
+/* Index: RELATIONSHIP_10_FK                                    */
+/*==============================================================*/
+create  index RELATIONSHIP_10_FK on PEMESANAN_HOTEL (
+ID_PEMESANAN
+);
+
+/*==============================================================*/
+/* Index: RELATIONSHIP_11_FK                                    */
+/*==============================================================*/
+create  index RELATIONSHIP_11_FK on PEMESANAN_HOTEL (
+ID_HOTEL
+);
+
+/*==============================================================*/
+/* Table: PEMESANAN_PAKET                                       */
+/*==============================================================*/
+create table PEMESANAN_PAKET (
+   ID_PEMESANAN         INT4                 null,
+   ID_PAKET             INT4                 null
+);
+
+/*==============================================================*/
+/* Index: RELATIONSHIP_6_FK                                     */
+/*==============================================================*/
+create  index RELATIONSHIP_6_FK on PEMESANAN_PAKET (
+ID_PEMESANAN
+);
+
+/*==============================================================*/
+/* Index: RELATIONSHIP_7_FK                                     */
+/*==============================================================*/
+create  index RELATIONSHIP_7_FK on PEMESANAN_PAKET (
+ID_PAKET
+);
+
+/*==============================================================*/
+/* Table: PEMESANAN_TIKET                                       */
+/*==============================================================*/
+create table PEMESANAN_TIKET (
+   ID_PEMESANAN         INT4                 null,
+   ID_TIKET             INT4                 null,
+   JUMLAH_TIKET         INT4                 null
+);
+
+/*==============================================================*/
+/* Index: RELATIONSHIP_4_FK                                     */
+/*==============================================================*/
+create  index RELATIONSHIP_4_FK on PEMESANAN_TIKET (
+ID_PEMESANAN
+);
+
+/*==============================================================*/
+/* Index: RELATIONSHIP_5_FK                                     */
+/*==============================================================*/
+create  index RELATIONSHIP_5_FK on PEMESANAN_TIKET (
+ID_TIKET
+);
+
+/*==============================================================*/
+/* Table: PENGGUNA                                              */
+/*==============================================================*/
+create table PENGGUNA (
+   ID_PENGGUNA          INT4                 not null,
+   NAMA                 VARCHAR(75)          null,
+   EMAIL                VARCHAR(50)          null,
+   PASSWORD             VARCHAR(245)         null,
+   NOMOR_TELEPON        INT4                 null,
+   TANGGAL_LAHIR        VARCHAR(245)         null,
+   ALAMAT               VARCHAR(245)         null,
+   TANGGAL_REGISTRASI   VARCHAR(245)         null,
+   constraint PK_PENGGUNA primary key (ID_PENGGUNA)
+);
+
+/*==============================================================*/
+/* Index: PENGGUNA_PK                                           */
+/*==============================================================*/
+create unique index PENGGUNA_PK on PENGGUNA (
+ID_PENGGUNA
+);
+
+/*==============================================================*/
+/* Table: TIKET_PESAWAT                                         */
+/*==============================================================*/
+create table TIKET_PESAWAT (
+   ID_TIKET             INT4                 not null,
+   MASKAPAI             VARCHAR(245)         null,
+   JADWAL_PENERBANGAN   DATE                 null,
+   TOTAL_HARGA          MONEY                null,
+   ASAL                 VARCHAR(245)         null,
+   TUJUAN               VARCHAR(245)         null,
+   TANGGAL_BERANGKAT    DATE                 null,
+   TANGGAL_PULANG       DATE                 null,
+   HARGA                MONEY                null,
+   constraint PK_TIKET_PESAWAT primary key (ID_TIKET)
+);
+
+/*==============================================================*/
+/* Index: TIKET_PESAWAT_PK                                      */
+/*==============================================================*/
+create unique index TIKET_PESAWAT_PK on TIKET_PESAWAT (
+ID_TIKET
+);
+
+alter table PEMBAYARAN
+   add constraint FK_PEMBAYAR_MEMILIKI_PEMESANA foreign key (ID_PEMESANAN)
+      references PEMESANAN (ID_PEMESANAN)
+      on delete restrict on update restrict;
+
+alter table PEMESANAN
+   add constraint FK_PEMESANA_MELAKUKAN_PENGGUNA foreign key (ID_PENGGUNA)
+      references PENGGUNA (ID_PENGGUNA)
+      on delete restrict on update restrict;
+
+alter table PEMESANAN
+   add constraint FK_PEMESANA_MEMILIKI2_PEMBAYAR foreign key (ID_PEMBAYARAN)
+      references PEMBAYARAN (ID_PEMBAYARAN)
+      on delete restrict on update restrict;
+
+alter table PEMESANAN_AKTIVITAS
+   add constraint FK_PEMESANA_RELATIONS_PEMESANA foreign key (ID_PEMESANAN)
+      references PEMESANAN (ID_PEMESANAN)
+      on delete restrict on update restrict;
+
+alter table PEMESANAN_AKTIVITAS
+   add constraint FK_PEMESANA_RELATIONS_AKTIVITA foreign key (ID_AKTIVITAS)
+      references AKTIVITAS_WISATA (ID_AKTIVITAS)
+      on delete restrict on update restrict;
+
+alter table PEMESANAN_HOTEL
+   add constraint FK_PEMESANA_RELATIONS_PEMESANA foreign key (ID_PEMESANAN)
+      references PEMESANAN (ID_PEMESANAN)
+      on delete restrict on update restrict;
+
+alter table PEMESANAN_HOTEL
+   add constraint FK_PEMESANA_RELATIONS_HOTEL foreign key (ID_HOTEL)
+      references HOTEL (ID_HOTEL)
+      on delete restrict on update restrict;
+
+alter table PEMESANAN_PAKET
+   add constraint FK_PEMESANA_RELATIONS_PEMESANA foreign key (ID_PEMESANAN)
+      references PEMESANAN (ID_PEMESANAN)
+      on delete restrict on update restrict;
+
+alter table PEMESANAN_PAKET
+   add constraint FK_PEMESANA_RELATIONS_PAKET_WI foreign key (ID_PAKET)
+      references PAKET_WISATA (ID_PAKET)
+      on delete restrict on update restrict;
+
+alter table PEMESANAN_TIKET
+   add constraint FK_PEMESANA_RELATIONS_PEMESANA foreign key (ID_PEMESANAN)
+      references PEMESANAN (ID_PEMESANAN)
+      on delete restrict on update restrict;
+
+alter table PEMESANAN_TIKET
+   add constraint FK_PEMESANA_RELATIONS_TIKET_PE foreign key (ID_TIKET)
+      references TIKET_PESAWAT (ID_TIKET)
+      on delete restrict on update restrict;
+
