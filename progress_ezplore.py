@@ -1,6 +1,5 @@
 from tkinter import messagebox
 from tkinter import *
-import tkinter as tk
 from PIL import ImageTk, Image
 from customtkinter import *
 import customtkinter as ctk
@@ -17,6 +16,13 @@ def setup_background(master, image_path):
 
 def configure_background(widget, color="black"):
     widget.configure(bg=color)
+
+def image_to_button(master, image_path,fg_color, command):
+    img = Image.open(image_path)  # Open the image
+    img = ImageTk.PhotoImage(img)  # Convert the image to PhotoImage
+    button = CTkButton(master, image=img, fg_color=fg_color,text=None,command=command)  # Create the button
+    button.image = img  # Store a reference to the image to prevent garbage collection
+    return button
 
 class EzploreApp:
     def __init__(self, master):
@@ -46,21 +52,20 @@ class EzploreApp:
         configure_background(self.current_frame, "black")
         self.current_frame.pack(fill="both", expand=True)
 
-
 class LoginPage(Frame):
     def __init__(self, app):
         super().__init__(app.master)
         self.app = app
         setup_background(self,"page1.jpg")
 
-        #CTkLabel(self, text="Username:").place(x=500, y=300)
-        self.entry_nama_pengguna = CTkEntry(self)
-        self.entry_nama_pengguna.place(x=575, y=300)
-        self.entry_password = CTkEntry(self, show="*")
-        self.entry_password.place(x=575, y=350)
+        self.entry_nama_pengguna = CTkEntry(self, width=120,height=12 ,fg_color='#163B44', text_color='#F7EDEC', font=('Inter', 9))
+        self.entry_nama_pengguna.place(x=613, y=287)
+        self.entry_password = CTkEntry(self, show="*",width=120,height=12 ,fg_color='#163B44', text_color='#F7EDEC', font=('Inter', 9))
+        self.entry_password.place(x=613, y=329)
 
-        CTkButton(self, text="Login", command=self.login).place(x=550, y=400)
-        CTkButton(self, text="Sign Up", command=lambda: app.show_frame(ValidationAge)).place(x=650, y=400)
+        CTkButton(self, text="Masuk", width=50,height=12 ,fg_color='#163B44', text_color='#F7EDEC', font=('Inter', 9,), command=self.login).place(relx=0.5, rely=0.67, anchor="center")
+        image_button = image_to_button(self,"Belum memiliki akun_ Buat akun.png",'#FF8225', lambda: app.show_frame(ValidationAge))
+        image_button.place(relx=0.5, rely=0.58, anchor="center")
 
     def login(self):
         username = self.entry_nama_pengguna.get()
