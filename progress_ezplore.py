@@ -23,7 +23,6 @@ def image_to_button(master, image_path,fg_color, command):
     button = CTkButton(master, image=img, fg_color=fg_color,text=None,command=command)  # Create the button
     button.image = img  # Store a reference to the image to prevent garbage collection
     return button
-
 class EzploreApp:
     def __init__(self, master):
         self.master = master
@@ -58,9 +57,12 @@ class LoginPage(Frame):
         self.app = app
         setup_background(self,"page1.jpg")
 
-        self.entry_nama_pengguna = CTkEntry(self, width=120,height=12 ,fg_color='#163B44', text_color='#F7EDEC', font=('Inter', 9))
+        self.NAMA_PENGGUNA=StringVar()
+        self.PASSWORD=StringVar()
+
+        self.entry_nama_pengguna = CTkEntry(self,textvariable=self.NAMA_PENGGUNA, width=120,height=12 ,fg_color='#163B44', text_color='#F7EDEC', font=('Inter', 9))
         self.entry_nama_pengguna.place(x=613, y=287)
-        self.entry_password = CTkEntry(self, show="*",width=120,height=12 ,fg_color='#163B44', text_color='#F7EDEC', font=('Inter', 9))
+        self.entry_password = CTkEntry(self,textvariable=self.PASSWORD, show="*",width=120,height=12 ,fg_color='#163B44', text_color='#F7EDEC', font=('Inter', 9))
         self.entry_password.place(x=613, y=329)
 
         CTkButton(self, text="Masuk", width=50,height=12 ,fg_color='#163B44', text_color='#F7EDEC', font=('Inter', 9,), command=self.login).place(relx=0.5, rely=0.67, anchor="center")
@@ -68,9 +70,9 @@ class LoginPage(Frame):
         image_button.place(relx=0.5, rely=0.58, anchor="center")
 
     def login(self):
-        username = self.entry_nama_pengguna.get()
+        nama_pengguna = self.entry_nama_pengguna.get()
         password = self.entry_password.get()
-        if username == "admin" and password == "password":  # Placeholder validation
+        if nama_pengguna == "admin" and password == "password":  # Placeholder validation
             self.app.show_frame(DashboardPage)
         else:
             messagebox.showerror("Error", "Invalid credentials")
@@ -81,10 +83,27 @@ class ValidationAge(Frame):
         self.app = app
         setup_background(self,"page2.jpg")
 
-        CTkLabel(self, text="Create an Account").pack(pady=20)
+        self.UMUR=IntVar()
 
-        CTkButton(self, text="Selanjutnya", command=lambda: app.show_frame(RegistrationPage)).place(x=550, y=400)
-        CTkButton(self, text="Back to Login", command=lambda: app.show_frame(DashboardPage)).place(x=650, y=400)
+        self.entry_umur = CTkEntry(self,textvariable=self.UMUR, width=120,height=12 ,fg_color='#163B44', text_color='#F7EDEC', font=('Inter', 9))
+        self.entry_umur.place(x=613, y=300)
+
+        #CTkButton(self, text="Selanjutnya", width=50,height=12 ,fg_color='#163B44', text_color='#F7EDEC', font=('Inter', 9,), command=self.cek_umur_pengguna).place(relx=0.545, rely=0.67, anchor="center")
+        CTkButton(self, text="Selanjutnya", width=50,height=12 ,fg_color='#163B44', text_color='#F7EDEC', font=('Inter', 9,), command=lambda: app.show_frame(DashboardPage)).place(relx=0.545, rely=0.67, anchor="center")
+
+#BUKA UNTUK UJI SYNTAX
+#    def cek_umur_pengguna(self):
+#        umur_pengguna = int(self.entry_umur.get())
+#        try:
+#            if umur_pengguna < 18:
+#                messagebox.showinfo("Info", "Usia minimal untuk mendaftar adalah 18 tahun!")
+#            else:
+#                self.app.show_frame(RegistrationPage)
+#        except ValueError:
+#            if self.entry_umur.get() == "":
+#                messagebox.showinfo("Info", "Harap lengkapi biodata usia Anda!")
+#            else:
+#                messagebox.showinfo("Info", "Masukkan usia yang valid!")
 
 class RegistrationPage(Frame):
     def __init__(self, app):
@@ -92,16 +111,32 @@ class RegistrationPage(Frame):
         self.app = app
         setup_background(self,"page3.jpg")
 
-        CTkButton(self, text="Register", command=lambda: app.show_frame(DashboardPage)).place(x=550, y=400)
-        CTkButton(self, text="Back to Login", command=lambda: app.show_frame(DashboardPage)).place(x=650, y=400)
+        self.NAMA_PENGGUNA=StringVar()
+        self.NOMOR_TELEPON=IntVar()
+        self.PASSWORD=StringVar()
 
-    def register(self):
-        username = self.entry_nama_pengguna.get()
-        password = self.entry_password.get()
-        # Implement actual registration logic
-        messagebox.showinfo("Success", "Registration Successful!")
-        self.app.show_frame(LoginPage)
+        self.entry_nama_pengguna = CTkEntry(self,textvariable=self.NAMA_PENGGUNA, width=120,height=12 ,fg_color='#163B44', text_color='#F7EDEC', font=('Inter', 9))
+        self.entry_nama_pengguna.place(x=613, y=287)
+        self.entry_nomor_telepon = CTkEntry(self,textvariable=self.NOMOR_TELEPON, width=120,height=12 ,fg_color='#163B44', text_color='#F7EDEC', font=('Inter', 9))
+        self.entry_nomor_telepon.place(x=613, y=329)
+        self.entry_password = CTkEntry(self,textvariable=self.PASSWORD,width=120,height=12 ,fg_color='#163B44', text_color='#F7EDEC', font=('Inter', 9))
+        self.entry_password.place(x=613, y=371)
 
+        CTkButton(self, text="Selanjutnya", width=50,height=13 ,fg_color='#163B44', text_color='#F7EDEC', font=('Inter', 8,), command=lambda: app.show_frame(DashboardPage)).place(relx=0.545, rely=0.67, anchor="center")
+
+#    def register(self):
+#        # MENGECEK APAKAH SUDAH TERISI
+#        try:
+#            nama_pengguna = self.entry_nama_pengguna.get()
+#            nomor_telepon = self.entry_nomor_telepon()
+#            password = self.entry_password.get()
+#            if nama_pengguna and password and nomor_telepon: #Seluruh field terisi
+#          # Placeholder validation
+#                self.app.show_frame(DashboardPage)
+#            else:
+#                messagebox.showerror("Error", "Harap lengkapi semua data!")
+#        except Exception as e:
+#            messagebox.showinfo("Info", f"Terjadi kesalahan: {e}")
 
 class DashboardPage(Frame):
     def __init__(self, app):
